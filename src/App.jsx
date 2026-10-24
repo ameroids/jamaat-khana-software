@@ -278,12 +278,12 @@ function Shell() {
           const isDarkHero = !scrolled && loc.pathname === '/';
           return (
             <header 
-              className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+              className={`fixed top-0 w-full z-50 transition-all duration-300 ${
                 scrolled 
-                  ? 'py-3.5 glass-nav bg-white/90 border-b border-zinc-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.04)] text-zinc-900' 
+                  ? 'py-3.5 glass-nav bg-white/95 border-b border-zinc-200/90 shadow-[0_10px_30px_rgba(0,0,0,0.06)] text-zinc-900' 
                   : isDarkHero
-                    ? 'py-6 bg-transparent text-white'
-                    : 'py-5 glass-nav bg-white/90 border-b border-zinc-200/80 text-zinc-900 shadow-sm'
+                    ? 'py-4 glass-nav bg-[#061812]/90 border-b border-emerald-500/25 text-white shadow-[0_10px_35px_rgba(0,0,0,0.35)]'
+                    : 'py-4 glass-nav bg-white/95 border-b border-zinc-200/90 text-zinc-900 shadow-sm'
               } ${scrollDir === 'down' && scrolled ? '-translate-y-full' : 'translate-y-0'}`}
               onMouseEnter={() => setCursorType('hover')}
               onMouseLeave={() => setCursorType('default')}
@@ -296,8 +296,8 @@ function Shell() {
                     <Building2 size={22} className="text-emerald-300" />
                   </div>
                   <div className="flex flex-col">
-                    <span className={`font-serif-luxury text-xl md:text-2xl font-bold tracking-tight leading-tight ${isDarkHero ? 'text-white' : 'text-zinc-900'}`}>
-                      Jamaat Khana <i className="text-amber-500 font-normal">Halls</i>
+                    <span className={`font-serif-luxury text-xl md:text-2xl font-bold tracking-tight leading-tight ${isDarkHero ? 'text-white drop-shadow-sm' : 'text-zinc-900'}`}>
+                      Jamaat Khana <i className={`font-normal ${isDarkHero ? 'text-amber-400' : 'text-amber-600'}`}>Halls</i>
                     </span>
                     <span className={`text-[10px] font-bold tracking-widest uppercase ${isDarkHero ? 'text-emerald-300' : 'text-emerald-800'}`}>
                       Dawoodi Bohra Community
@@ -313,7 +313,7 @@ function Shell() {
                     className={({ isActive }) => `relative py-1 group overflow-hidden transition-colors ${
                       isActive 
                         ? (isDarkHero ? 'text-white font-bold' : 'text-emerald-800 font-bold') 
-                        : (isDarkHero ? 'text-white/80 hover:text-white' : 'text-zinc-600 hover:text-zinc-900')
+                        : (isDarkHero ? 'text-zinc-200 hover:text-white' : 'text-zinc-600 hover:text-zinc-900')
                     }`}
                   >
                     {({ isActive }) => (
@@ -332,7 +332,7 @@ function Shell() {
                         className={({ isActive }) => `relative py-1 group overflow-hidden transition-colors ${
                           isActive 
                             ? (isDarkHero ? 'text-white font-bold' : 'text-emerald-800 font-bold') 
-                            : (isDarkHero ? 'text-white/80 hover:text-white' : 'text-zinc-600 hover:text-zinc-900')
+                            : (isDarkHero ? 'text-zinc-200 hover:text-white' : 'text-zinc-600 hover:text-zinc-900')
                         }`}
                       >
                         {({ isActive }) => (
@@ -348,7 +348,7 @@ function Shell() {
                         className={({ isActive }) => `relative py-1 group overflow-hidden transition-colors ${
                           isActive 
                             ? (isDarkHero ? 'text-white font-bold' : 'text-emerald-800 font-bold') 
-                            : (isDarkHero ? 'text-white/80 hover:text-white' : 'text-zinc-600 hover:text-zinc-900')
+                            : (isDarkHero ? 'text-zinc-200 hover:text-white' : 'text-zinc-600 hover:text-zinc-900')
                         }`}
                       >
                         {({ isActive }) => (
@@ -364,10 +364,10 @@ function Shell() {
 
                   <NavLink 
                     to="/admin/login" 
-                    className={`text-xs uppercase font-bold tracking-widest px-3 py-1.5 rounded-lg transition-colors ${
+                    className={`text-xs uppercase font-bold tracking-widest px-3 py-1.5 rounded-lg transition-all ${
                       isDarkHero 
-                        ? 'text-white/70 hover:text-white hover:bg-white/10' 
-                        : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100'
+                        ? 'text-emerald-100 hover:text-white bg-white/10 hover:bg-white/20 border border-white/15' 
+                        : 'text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/80'
                     }`}
                   >
                     Admin Desk
@@ -381,27 +381,31 @@ function Shell() {
                       {pendingCount > 0 && (
                         <button 
                           onClick={() => nav('/dashboard')} 
-                          className="relative p-2.5 bg-amber-50 text-amber-800 rounded-full hover:bg-amber-100 transition-colors border border-amber-200"
+                          className={`relative p-2.5 rounded-full transition-colors border ${
+                            isDarkHero 
+                              ? 'bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border-amber-400/40' 
+                              : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border-amber-200'
+                          }`}
                           title="Pending Reservations"
                         >
                           <Clock size={18} />
-                          <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
+                          <span className="absolute -top-1 -right-1 bg-amber-500 text-zinc-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
                             {pendingCount}
                           </span>
                         </button>
                       )}
                       <div className={`hidden sm:flex items-center gap-2 pl-2 border-l ${isDarkHero ? 'border-white/20' : 'border-zinc-200'}`}>
-                        <div className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm">
+                        <div className={`w-8 h-8 rounded-full ${isDarkHero ? 'bg-emerald-600 border border-emerald-400/40 text-white' : 'bg-emerald-700 text-white'} flex items-center justify-center font-bold text-xs uppercase shadow-sm`}>
                           {m.name.charAt(0)}
                         </div>
                         <div className="text-left text-xs">
                           <p className={`font-bold leading-tight ${isDarkHero ? 'text-white' : 'text-zinc-800'}`}>{m.name.split(' ')[0]}</p>
-                          <p className={`font-medium ${isDarkHero ? 'text-white/60' : 'text-zinc-400'}`}>ITS {m.itsNumber}</p>
+                          <p className={`font-medium ${isDarkHero ? 'text-emerald-200/90' : 'text-zinc-400'}`}>ITS {m.itsNumber}</p>
                         </div>
                       </div>
                       <button 
                         onClick={() => { db.logout('member'); addGlobalToast('Logged out successfully'); nav('/login'); }}
-                        className={`p-2 rounded-xl transition-colors ${isDarkHero ? 'text-white/70 hover:text-rose-300 hover:bg-white/10' : 'text-zinc-500 hover:text-rose-600 hover:bg-rose-50'}`}
+                        className={`p-2 rounded-xl transition-colors ${isDarkHero ? 'text-zinc-300 hover:text-rose-400 hover:bg-white/10' : 'text-zinc-500 hover:text-rose-600 hover:bg-rose-50'}`}
                         title="Sign Out"
                       >
                         <LogOut size={18} />
@@ -411,10 +415,10 @@ function Shell() {
                     <div className="flex items-center gap-2">
                       <Link 
                         to="/login"
-                        className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm ${
+                        className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 shadow-md hover:scale-105 ${
                           isDarkHero 
-                            ? 'bg-white text-zinc-950 hover:bg-amber-300 hover:scale-105' 
-                            : 'bg-zinc-900 text-white hover:bg-emerald-900'
+                            ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-zinc-950 font-black hover:shadow-[0_0_20px_rgba(245,158,11,0.5)]' 
+                            : 'bg-gradient-to-r from-[#123D32] to-[#1C5B49] text-white font-bold hover:shadow-lg'
                         }`}
                       >
                         Member Sign In
@@ -425,7 +429,7 @@ function Shell() {
                   {/* Mobile Menu Button */}
                   <button 
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className={`lg:hidden p-2 rounded-xl ${isDarkHero ? 'text-white hover:bg-white/10' : 'text-zinc-700 hover:bg-zinc-100'}`}
+                    className={`lg:hidden p-2 rounded-xl transition-colors ${isDarkHero ? 'text-white hover:bg-white/15' : 'text-zinc-700 hover:bg-zinc-100'}`}
                     aria-label="Toggle navigation"
                   >
                     {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -438,32 +442,60 @@ function Shell() {
                 <motion.div 
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-zinc-200 px-6 py-6 space-y-4 shadow-xl text-zinc-900"
+                  className={`lg:hidden backdrop-blur-2xl px-6 py-6 space-y-4 shadow-2xl border-b ${
+                    isDarkHero 
+                      ? 'bg-[#061812]/98 border-emerald-800/40 text-white' 
+                      : 'bg-white/98 border-zinc-200 text-zinc-900'
+                  }`}
                 >
-                  <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-zinc-800">
+                  <Link 
+                    to="/" 
+                    onClick={() => setMobileMenuOpen(false)} 
+                    className={`block py-2 text-base font-bold transition-colors ${isDarkHero ? 'text-white hover:text-amber-300' : 'text-zinc-800 hover:text-emerald-800'}`}
+                  >
                     Browse Venues
                   </Link>
                   {m ? (
                     <>
-                      <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-zinc-800">
+                      <Link 
+                        to="/dashboard" 
+                        onClick={() => setMobileMenuOpen(false)} 
+                        className={`block py-2 text-base font-bold transition-colors ${isDarkHero ? 'text-white hover:text-amber-300' : 'text-zinc-800 hover:text-emerald-800'}`}
+                      >
                         My Bookings
                       </Link>
-                      <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-zinc-800">
+                      <Link 
+                        to="/profile" 
+                        onClick={() => setMobileMenuOpen(false)} 
+                        className={`block py-2 text-base font-bold transition-colors ${isDarkHero ? 'text-white hover:text-amber-300' : 'text-zinc-800 hover:text-emerald-800'}`}
+                      >
                         ITS Profile ({m.name})
                       </Link>
                       <button 
                         onClick={() => { db.logout('member'); setMobileMenuOpen(false); nav('/login'); }}
-                        className="flex items-center gap-2 text-rose-600 font-bold py-2"
+                        className="flex items-center gap-2 text-rose-500 font-bold py-2 hover:text-rose-400"
                       >
                         <LogOut size={16} /> Sign Out
                       </button>
                     </>
                   ) : (
-                    <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-base font-bold text-emerald-800">
+                    <Link 
+                      to="/login" 
+                      onClick={() => setMobileMenuOpen(false)} 
+                      className={`block py-2 text-base font-bold transition-colors ${isDarkHero ? 'text-amber-300 hover:text-amber-200' : 'text-emerald-800'}`}
+                    >
                       Member Login
                     </Link>
                   )}
-                  <Link to="/admin/login" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-zinc-500 font-semibold border-t border-zinc-100 pt-3">
+                  <Link 
+                    to="/admin/login" 
+                    onClick={() => setMobileMenuOpen(false)} 
+                    className={`block py-2 text-sm font-semibold border-t pt-3 transition-colors ${
+                      isDarkHero 
+                        ? 'text-emerald-200 hover:text-white border-white/10' 
+                        : 'text-zinc-500 hover:text-zinc-800 border-zinc-100'
+                    }`}
+                  >
                     Admin Portal
                   </Link>
                 </motion.div>
@@ -473,7 +505,7 @@ function Shell() {
         })()}
 
         {/* --- PAGE CONTENT ROUTER --- */}
-        <main className="flex-1 pt-20">
+        <main className={`flex-1 ${loc.pathname === '/' ? 'pt-0' : 'pt-20'}`}>
           <Outlet context={{ setCursorType }} />
         </main>
 
@@ -761,7 +793,7 @@ function Home() {
       {/* =========================================================================
           SECTION 1: EPIC DYNAMIC HERO SECTION (NIKE AIR MAX DN BENCHMARK)
           ========================================================================= */}
-      <section className={`relative min-h-[92vh] pt-20 pb-16 flex flex-col justify-center overflow-hidden transition-colors duration-1000 ease-in-out ${activeTheme.themeClass}`}>
+      <section className={`relative min-h-[95vh] pt-28 sm:pt-32 pb-16 flex flex-col justify-center overflow-hidden transition-colors duration-1000 ease-in-out ${activeTheme.themeClass}`}>
         
         {/* Massive Architectural Watermark Typography */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-0 pointer-events-none select-none">
