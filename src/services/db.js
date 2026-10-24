@@ -1,6 +1,6 @@
 // Centralised local data service (localStorage). Replace this module with a Supabase adapter later.
 import {useSyncExternalStore} from 'react';
-const KEY='jk_demo_db_v1';
+const KEY='jk_demo_db_v2';
 const pad=n=>String(n).padStart(2,'0');
 export const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 export const today=()=>iso(new Date());
@@ -11,11 +11,11 @@ export const fmt=n=>'₹'+Number(n||0).toLocaleString('en-IN');
 const now=()=>Date.now();
 
 export const DEFAULT_HALL_IMAGES = {
-  h1: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1200',
-  h2: 'https://images.unsplash.com/photo-1545232979-8bf68ee9b1af?auto=format&fit=crop&q=80&w=1200',
-  h3: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80&w=1200',
-  h4: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=1200',
-  h5: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200',
+  h1: '/images/halls/burhani.jpg',
+  h2: '/images/halls/tayyebi.jpg',
+  h3: '/images/halls/mohammedi.jpg',
+  h4: '/images/halls/hakimi.jpg',
+  h5: '/images/halls/tayyebi_2nd_floor.jpg',
 };
 
 function seed(){
@@ -31,7 +31,7 @@ function seed(){
     capacity:h[1],
     description:h[3],
     enabled:true,
-    image: DEFAULT_HALL_IMAGES['h'+(i+1)] || 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1200',
+    image: DEFAULT_HALL_IMAGES['h'+(i+1)] || '/images/halls/burhani.jpg',
     amenities:['Central Air Conditioning','Spacious Thaali Dining Hall','Crystal Chandeliers & Lighting','Integrated High-Fidelity Audio','Bridal & Family Suite','Dedicated Valet & Parking'],
     prices:{morning:h[2],afternoon:h[2]+1000,evening:h[2]+2000}
   }));
@@ -56,9 +56,11 @@ function load(){
   try{
     const s=JSON.parse(localStorage.getItem(KEY));
     if(s&&s.v===1&&s.halls&&s.bookings){
-      // Ensure halls have images
+      // Ensure halls have modern authentic hall images
       s.halls.forEach((h, i) => {
-        if(!h.image) h.image = DEFAULT_HALL_IMAGES[h.id] || DEFAULT_HALL_IMAGES['h'+((i%5)+1)];
+        if(!h.image || h.image.includes('unsplash.com')) {
+          h.image = DEFAULT_HALL_IMAGES[h.id] || DEFAULT_HALL_IMAGES['h'+((i%5)+1)];
+        }
       });
       return s;
     }
