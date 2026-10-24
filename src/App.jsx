@@ -362,16 +362,18 @@ function Shell() {
                     </>
                   ) : null}
 
-                  <NavLink 
-                    to="/admin/login" 
-                    className={`text-xs uppercase font-bold tracking-widest px-3 py-1.5 rounded-lg transition-all ${
-                      isDarkHero 
-                        ? 'text-emerald-100 hover:text-white bg-white/10 hover:bg-white/20 border border-white/15' 
-                        : 'text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/80'
-                    }`}
-                  >
-                    Admin Desk
-                  </NavLink>
+                  {s.session.admin && (
+                    <NavLink 
+                      to="/admin" 
+                      className={`text-xs uppercase font-bold tracking-widest px-3.5 py-1.5 rounded-lg transition-all ${
+                        isDarkHero 
+                          ? 'text-amber-300 bg-amber-400/20 border border-amber-400/40' 
+                          : 'text-emerald-800 bg-emerald-50 border border-emerald-200'
+                      }`}
+                    >
+                      Admin Panel
+                    </NavLink>
+                  )}
                 </nav>
 
                 {/* Actions / User Controls */}
@@ -487,17 +489,19 @@ function Shell() {
                       Member Login
                     </Link>
                   )}
-                  <Link 
-                    to="/admin/login" 
-                    onClick={() => setMobileMenuOpen(false)} 
-                    className={`block py-2 text-sm font-semibold border-t pt-3 transition-colors ${
-                      isDarkHero 
-                        ? 'text-emerald-200 hover:text-white border-white/10' 
-                        : 'text-zinc-500 hover:text-zinc-800 border-zinc-100'
-                    }`}
-                  >
-                    Admin Portal
-                  </Link>
+                  {s.session.admin && (
+                    <Link 
+                      to="/admin" 
+                      onClick={() => setMobileMenuOpen(false)} 
+                      className={`block py-2 text-sm font-semibold border-t pt-3 transition-colors ${
+                        isDarkHero 
+                          ? 'text-amber-300 hover:text-white border-white/10' 
+                          : 'text-emerald-800 hover:text-emerald-950 border-zinc-100'
+                      }`}
+                    >
+                      Admin Console
+                    </Link>
+                  )}
                 </motion.div>
               )}
             </header>
@@ -567,11 +571,10 @@ function Shell() {
             <div className="md:col-span-3">
               <h4 className="font-bold uppercase tracking-widest text-xs mb-6 text-zinc-900">Office & Support</h4>
               <p className="text-sm text-zinc-500 mb-3">{s.settings.contact}</p>
-              <p className="text-xs text-zinc-400 mb-6">{s.settings.policy}</p>
-              <div className="space-y-2">
-                <Link to="/admin/login" className="text-xs font-bold text-zinc-700 hover:text-emerald-800 flex items-center gap-1.5 underline">
-                  <ShieldCheck size={14} /> Admin Management Desk
-                </Link>
+              <p className="text-xs text-zinc-400 mb-4">{s.settings.policy}</p>
+              <div className="text-xs text-zinc-500 font-medium bg-zinc-50 p-3 rounded-xl border border-zinc-200/80">
+                <span className="font-bold text-zinc-700 block mb-0.5">Office Hours:</span>
+                Mon – Sat: 9:00 AM – 6:00 PM
               </div>
             </div>
           </div>
@@ -694,7 +697,7 @@ function AdminLogin() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md bg-white rounded-3xl p-8 md:p-10 shadow-[0_25px_60px_rgba(0,0,0,0.06)] border border-zinc-200/80">
-        <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center mb-6 shadow-sm">
+        <div className="w-14 h-14 rounded-2xl bg-[#123D32] text-amber-300 flex items-center justify-center mb-6 shadow-md shadow-emerald-950/20">
           <ShieldCheck size={28} />
         </div>
         <h1 className="font-serif-luxury text-3xl font-bold text-zinc-900 mb-2">Admin Desk</h1>
@@ -708,13 +711,13 @@ function AdminLogin() {
               value={u} 
               onChange={x => setU(x.target.value)} 
               placeholder="admin@ameroids.demo"
-              className="mt-1 w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 font-medium focus:bg-white"
+              className="mt-1 w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-900 font-medium focus:bg-white focus:border-[#123D32]"
             />
           </label>
           <Pw value={pw} onChange={setPw} />
           <button 
             type="submit"
-            className="w-full bg-zinc-900 hover:bg-black text-white py-4 rounded-full font-bold uppercase tracking-wider text-xs transition-all duration-300 shadow-md flex items-center justify-center gap-2 mt-4"
+            className="w-full bg-[#123D32] hover:bg-[#1C5B49] text-white py-4 rounded-full font-bold uppercase tracking-wider text-xs transition-all duration-300 shadow-md flex items-center justify-center gap-2 mt-4"
           >
             Access Admin Console <ArrowRight size={16} />
           </button>
@@ -2347,32 +2350,37 @@ function Dashboard() {
 function AdminLayout() {
   const nav = useNavigate();
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col md:flex-row">
-      <aside className="w-full md:w-64 bg-zinc-900/90 border-r border-zinc-800 p-6 flex flex-col justify-between shrink-0">
+    <div className="min-h-screen bg-[#FAF8F5] text-zinc-900 flex flex-col md:flex-row font-sans">
+      <aside className="w-full md:w-72 bg-white border-r border-zinc-200/80 p-6 flex flex-col justify-between shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
         <div className="space-y-6">
-          <div className="flex items-center gap-2.5 pb-4 border-b border-zinc-800">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+          <div className="flex items-center gap-3 pb-5 border-b border-zinc-100">
+            <div className="w-10 h-10 rounded-xl bg-[#123D32] text-amber-300 flex items-center justify-center font-bold text-sm shadow-sm">
               AD
             </div>
-            <span className="font-serif-luxury text-xl font-bold tracking-tight text-white">Office Admin</span>
+            <div>
+              <span className="font-serif-luxury text-xl font-bold tracking-tight text-zinc-900 block leading-tight">Admin Console</span>
+              <span className="text-[10px] uppercase tracking-wider text-emerald-800 font-bold">Jamaat Khana Desk</span>
+            </div>
           </div>
 
-          <nav className="space-y-1 text-sm font-semibold">
+          <nav className="space-y-1.5 text-xs font-semibold">
             {[
               ['', 'Overview'],
-              ['bookings', 'Bookings'],
+              ['bookings', 'All Bookings'],
               ['calendar', 'Master Calendar'],
-              ['payments', 'Payments'],
-              ['members', 'Members'],
-              ['halls', 'Halls & Blocks'],
-              ['settings', 'Settings'],
+              ['payments', 'Payments Ledger'],
+              ['members', 'Community Members'],
+              ['halls', 'Venues & Lockouts'],
+              ['settings', 'System Settings'],
             ].map(([p, l]) => (
               <NavLink 
                 end={!p} 
                 key={p} 
                 to={'/admin/' + p}
-                className={({ isActive }) => `block px-4 py-2.5 rounded-xl transition-colors ${
-                  isActive ? 'bg-emerald-600 text-white font-bold' : 'text-zinc-400 hover:bg-zinc-800/80 hover:text-white'
+                className={({ isActive }) => `block px-4 py-3 rounded-2xl transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-[#123D32] text-white font-bold shadow-md shadow-emerald-950/20 translate-x-1' 
+                    : 'text-zinc-600 hover:bg-zinc-100/80 hover:text-zinc-950'
                 }`}
               >
                 {l}
@@ -2381,14 +2389,16 @@ function AdminLayout() {
           </nav>
         </div>
 
-        <div className="pt-6 border-t border-zinc-800 space-y-4">
+        <div className="pt-6 border-t border-zinc-100 space-y-4">
           <button 
             onClick={() => { db.logout('admin'); nav('/admin/login'); }}
-            className="flex items-center gap-2 text-rose-400 text-xs font-bold hover:text-rose-300 w-full"
+            className="flex items-center gap-2.5 text-rose-600 text-xs font-bold hover:text-rose-700 px-4 py-2.5 rounded-xl hover:bg-rose-50 transition-colors w-full"
           >
-            <LogOut size={16} /> Exit Admin
+            <LogOut size={16} /> Exit Admin Session
           </button>
-          <Brand />
+          <div className="px-4 py-3 bg-zinc-50 rounded-2xl border border-zinc-200/60">
+            <Brand />
+          </div>
         </div>
       </aside>
 
@@ -2403,17 +2413,17 @@ function AdminLayout() {
 function Bars({ data }) {
   const mx = Math.max(1, ...data.map(d => d[1]));
   return (
-    <div className="space-y-3">
+    <div className="space-y-3.5">
       {data.map(([k, v]) => (
         <div key={k} className="flex items-center gap-3 text-xs">
-          <span className="w-28 font-medium text-zinc-400 truncate">{k}</span>
-          <div className="flex-1 h-3 bg-zinc-800 rounded-full overflow-hidden">
+          <span className="w-32 font-semibold text-zinc-700 truncate">{k}</span>
+          <div className="flex-1 h-3.5 bg-zinc-100 rounded-full overflow-hidden p-0.5 border border-zinc-200/60">
             <div 
-              className="h-full bg-emerald-500 rounded-full transition-all duration-700" 
+              className="h-full bg-gradient-to-r from-[#123D32] to-[#1C5B49] rounded-full transition-all duration-700 shadow-sm" 
               style={{ width: `${(v / mx) * 100}%` }} 
             />
           </div>
-          <b className="w-8 text-right font-mono text-zinc-200">{v}</b>
+          <b className="w-8 text-right font-mono font-bold text-zinc-900">{v}</b>
         </div>
       ))}
     </div>
@@ -2439,26 +2449,30 @@ function Overview() {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="font-serif-luxury text-4xl font-bold text-white mb-1">Executive Dashboard</h1>
-        <p className="text-xs text-zinc-400 font-medium">Jamaat Khana Hall Booking System Performance</p>
+        <h1 className="font-serif-luxury text-4xl font-bold text-zinc-900 mb-1">Executive Dashboard</h1>
+        <p className="text-xs text-zinc-500 font-medium">Jamaat Khana Hall Booking System Real-Time Performance</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
         {stat.map(([title, val]) => (
-          <div key={title} className="p-6 bg-zinc-900 rounded-3xl border border-zinc-800 shadow-sm">
-            <span className="text-2xl md:text-3xl font-black text-white block mb-1">{val}</span>
-            <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">{title}</span>
+          <div key={title} className="p-6 bg-white rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
+            <span className="text-2xl md:text-3xl font-black text-zinc-900 block mb-1.5 font-serif-luxury tracking-tight">{val}</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">{title}</span>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-300 mb-6">Bookings by Venue</h3>
+        <div className="bg-white p-7 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-600 mb-6 flex items-center justify-between border-b border-zinc-100 pb-3">
+            <span>Bookings by Venue</span>
+          </h3>
           <Bars data={s.halls.map(h => [h.name, live.filter(b => b.hallId === h.id).length])} />
         </div>
-        <div className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-300 mb-6">Status Distribution</h3>
+        <div className="bg-white p-7 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-600 mb-6 flex items-center justify-between border-b border-zinc-100 pb-3">
+            <span>Status Distribution</span>
+          </h3>
           <Bars data={['Confirmed', 'Pending Payment', 'Cancelled', 'Expired'].map(k => [k, c(k)])} />
         </div>
       </div>
@@ -2501,10 +2515,10 @@ function Bookings() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="font-serif-luxury text-4xl font-bold text-white mb-1">Bookings</h1>
-          <p className="text-xs text-zinc-400">Total {rows.length} reservation records found</p>
+          <h1 className="font-serif-luxury text-4xl font-bold text-zinc-900 mb-1">Bookings</h1>
+          <p className="text-xs text-zinc-500 font-medium">Total {rows.length} reservation records found across all halls</p>
         </div>
-        <button onClick={exp} className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+        <button onClick={exp} className="px-5 py-2.5 bg-[#123D32] hover:bg-[#1C5B49] text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition-colors">
           <Download size={14} /> Export CSV
         </button>
       </div>
@@ -2515,12 +2529,12 @@ function Bookings() {
           placeholder="Search member, ITS, ref, date..." 
           value={q} 
           onChange={e => { setQ(e.target.value); setPg(0); }}
-          className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 flex-1 min-w-[200px]"
+          className="px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-[#123D32] flex-1 min-w-[200px] shadow-sm"
         />
         <select 
           value={st} 
           onChange={e => setSt(e.target.value)}
-          className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-zinc-300"
+          className="px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-700 shadow-sm focus:outline-none focus:border-[#123D32]"
         >
           <option value="">All Statuses</option>
           {['Pending Payment', 'Confirmed', 'Cancelled', 'Expired'].map(x => <option key={x}>{x}</option>)}
@@ -2528,7 +2542,7 @@ function Bookings() {
         <select 
           value={hall} 
           onChange={e => setHall(e.target.value)}
-          className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-zinc-300"
+          className="px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-700 shadow-sm focus:outline-none focus:border-[#123D32]"
         >
           <option value="">All Halls</option>
           {s.halls.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
@@ -2536,10 +2550,10 @@ function Bookings() {
       </div>
 
       {/* Table */}
-      <div className="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden">
+      <div className="bg-white rounded-3xl border border-zinc-200/80 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-800/80 text-zinc-400 uppercase font-bold text-[10px] tracking-wider">
+            <thead className="bg-zinc-50/80 text-zinc-500 uppercase font-bold text-[10px] tracking-wider border-b border-zinc-200/80">
               <tr>
                 <th className="p-4">Ref</th>
                 <th className="p-4">Member</th>
@@ -2553,20 +2567,20 @@ function Bookings() {
                 <th className="p-4">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800 text-zinc-200 font-medium">
+            <tbody className="divide-y divide-zinc-100 text-zinc-800 font-medium">
               {page.map(b => (
-                <tr key={b.id} className="hover:bg-zinc-800/40">
-                  <td className="p-4 font-mono font-bold text-emerald-400">{b.bookingReference}</td>
-                  <td className="p-4 font-semibold">{s.members.find(m => m.id === b.memberId)?.name}</td>
-                  <td className="p-4 font-mono text-zinc-400">{b.itsNumber}</td>
-                  <td className="p-4">{hallOf(s, b.hallId).name}</td>
-                  <td className="p-4">{b.bookingDate}</td>
-                  <td className="p-4 capitalize">{b.slotId}</td>
-                  <td className="p-4 font-bold">{fmt(b.totalAmount)}</td>
-                  <td className="p-4 font-bold text-emerald-400">{fmt(b.paidAmount)}</td>
+                <tr key={b.id} className="hover:bg-zinc-50/70 transition-colors">
+                  <td className="p-4 font-mono font-bold text-[#123D32]">{b.bookingReference}</td>
+                  <td className="p-4 font-semibold text-zinc-900">{s.members.find(m => m.id === b.memberId)?.name}</td>
+                  <td className="p-4 font-mono text-zinc-500">{b.itsNumber}</td>
+                  <td className="p-4 text-zinc-700">{hallOf(s, b.hallId).name}</td>
+                  <td className="p-4 text-zinc-700">{b.bookingDate}</td>
+                  <td className="p-4 capitalize text-zinc-700">{b.slotId}</td>
+                  <td className="p-4 font-bold text-zinc-900">{fmt(b.totalAmount)}</td>
+                  <td className="p-4 font-bold text-emerald-700">{fmt(b.paidAmount)}</td>
                   <td className="p-4"><Pill v={b.bookingStatus} /></td>
                   <td className="p-4">
-                    <button onClick={() => setSel(b.id)} className="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg text-xs font-semibold">
+                    <button onClick={() => setSel(b.id)} className="px-3.5 py-1.5 bg-zinc-100 hover:bg-[#123D32] hover:text-white text-zinc-700 rounded-lg text-xs font-semibold transition-colors">
                       Manage
                     </button>
                   </td>
@@ -2578,11 +2592,11 @@ function Bookings() {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between text-xs text-zinc-400 pt-2">
+      <div className="flex items-center justify-between text-xs text-zinc-500 pt-2 font-medium">
         <span>Showing Page {pg + 1} of {Math.max(1, Math.ceil(rows.length / 8))}</span>
         <div className="flex gap-2">
-          <button disabled={!pg} onClick={() => setPg(pg - 1)} className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg disabled:opacity-40">Previous</button>
-          <button disabled={(pg + 1) * 8 >= rows.length} onClick={() => setPg(pg + 1)} className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg disabled:opacity-40">Next</button>
+          <button disabled={!pg} onClick={() => setPg(pg - 1)} className="px-4 py-2 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 text-zinc-700 disabled:opacity-40 shadow-sm transition-colors">Previous</button>
+          <button disabled={(pg + 1) * 8 >= rows.length} onClick={() => setPg(pg + 1)} className="px-4 py-2 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 text-zinc-700 disabled:opacity-40 shadow-sm transition-colors">Next</button>
         </div>
       </div>
 
@@ -2598,30 +2612,30 @@ function Manage({ b, s, close }) {
   const [e, setE] = useState('');
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={close}>
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-md w-full text-white shadow-2xl" onClick={x => x.stopPropagation()}>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={close}>
+      <div className="bg-white border border-zinc-200/80 rounded-3xl p-8 max-w-md w-full text-zinc-900 shadow-2xl" onClick={x => x.stopPropagation()}>
         <div className="flex justify-between items-start mb-4">
           <div>
-            <span className="text-xs text-emerald-400 font-mono font-bold block">{b.bookingReference}</span>
-            <h3 className="font-serif-luxury text-2xl font-bold">Manage Booking</h3>
+            <span className="text-xs text-emerald-700 font-mono font-bold block">{b.bookingReference}</span>
+            <h3 className="font-serif-luxury text-2xl font-bold text-zinc-900">Manage Booking</h3>
           </div>
-          <button onClick={close} className="p-2 text-zinc-400 hover:text-white"><X size={18} /></button>
+          <button onClick={close} className="p-2 text-zinc-400 hover:text-zinc-700 transition-colors"><X size={18} /></button>
         </div>
-        <p className="text-xs text-zinc-400 mb-4">Balance: {fmt(b.remainingAmount)} · Advance: {fmt(b.advanceAmount)}</p>
+        <p className="text-xs text-zinc-500 mb-4 font-medium">Balance: <span className="font-bold text-zinc-800">{fmt(b.remainingAmount)}</span> · Advance: <span className="font-bold text-zinc-800">{fmt(b.advanceAmount)}</span></p>
         <Err e={e} />
 
         <div className="space-y-4">
-          <label className="block text-xs font-bold uppercase text-zinc-400">
+          <label className="block text-xs font-bold uppercase text-zinc-600">
             Internal Notes
-            <textarea value={note} onChange={x => setNote(x.target.value)} rows={2} className="mt-1 w-full p-3 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+            <textarea value={note} onChange={x => setNote(x.target.value)} rows={2} className="mt-1 w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
           </label>
-          <button onClick={() => db.setNote(b.id, note)} className="w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-xs font-bold rounded-xl text-zinc-200">
+          <button onClick={() => db.setNote(b.id, note)} className="w-full py-2.5 bg-zinc-100 hover:bg-zinc-200 text-xs font-bold rounded-xl text-zinc-800 transition-colors">
             Save Internal Note
           </button>
 
-          <label className="block text-xs font-bold uppercase text-zinc-400 pt-2 border-t border-zinc-800">
+          <label className="block text-xs font-bold uppercase text-zinc-600 pt-3 border-t border-zinc-100">
             Record Offline Cash/Cheque Payment (₹)
-            <input value={amt} onChange={x => setAmt(x.target.value)} placeholder="e.g. 5000" className="mt-1 w-full p-3 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white font-mono" />
+            <input value={amt} onChange={x => setAmt(x.target.value)} placeholder="e.g. 5000" className="mt-1 w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 font-mono focus:bg-white focus:border-[#123D32]" />
           </label>
           <button 
             onClick={() => {
@@ -2632,19 +2646,19 @@ function Manage({ b, s, close }) {
                 setE(x.message);
               }
             }} 
-            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-xs font-bold rounded-xl text-white"
+            className="w-full py-2.5 bg-[#123D32] hover:bg-[#1C5B49] text-xs font-bold rounded-xl text-white shadow-sm transition-colors"
           >
             Record Offline Payment
           </button>
 
-          <div className="flex gap-2 pt-4 border-t border-zinc-800">
-            <Link to={'/receipt/' + b.id} className="flex-1 text-center py-2.5 bg-zinc-800 rounded-xl text-xs font-bold text-zinc-200">
+          <div className="flex gap-2 pt-4 border-t border-zinc-100">
+            <Link to={'/receipt/' + b.id} className="flex-1 text-center py-2.5 bg-zinc-100 hover:bg-zinc-200 rounded-xl text-xs font-bold text-zinc-800 transition-colors">
               Receipt
             </Link>
             {['Confirmed', 'Pending Payment'].includes(b.bookingStatus) && (
               <button 
                 onClick={() => window.confirm('Cancel booking?') && db.cancel(b.id, { by: 'admin', refund: b.paidAmount > 0 && window.confirm('Refund amount paid?') })}
-                className="flex-1 py-2.5 bg-rose-900/60 hover:bg-rose-900 text-rose-200 rounded-xl text-xs font-bold"
+                className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition-colors"
               >
                 Cancel
               </button>
@@ -2682,33 +2696,36 @@ function AdminCalendar() {
 
   return (
     <div className="space-y-6">
-      <h1 className="font-serif-luxury text-4xl font-bold text-white mb-1">Master Schedule Calendar</h1>
+      <div>
+        <h1 className="font-serif-luxury text-4xl font-bold text-zinc-900 mb-1">Master Schedule Calendar</h1>
+        <p className="text-xs text-zinc-500 font-medium">Visual timetable of hall bookings and maintenance lockouts</p>
+      </div>
 
       {/* Filter bar */}
       <div className="flex flex-wrap gap-3">
-        <select value={hall} onChange={e => setHall(e.target.value)} className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-zinc-300">
+        <select value={hall} onChange={e => setHall(e.target.value)} className="px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-700 shadow-sm focus:outline-none focus:border-[#123D32]">
           <option value="">All Halls</option>
           {s.halls.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
         </select>
-        <select value={slot} onChange={e => setSlot(e.target.value)} className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-zinc-300">
+        <select value={slot} onChange={e => setSlot(e.target.value)} className="px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-700 shadow-sm focus:outline-none focus:border-[#123D32]">
           <option value="">All Slots</option>
           {s.settings.slots.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}
         </select>
-        <select value={st} onChange={e => setSt(e.target.value)} className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-zinc-300">
+        <select value={st} onChange={e => setSt(e.target.value)} className="px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-700 shadow-sm focus:outline-none focus:border-[#123D32]">
           <option value="">All Statuses</option>
           {['Pending Payment', 'Confirmed', 'Cancelled', 'Expired'].map(x => <option key={x}>{x}</option>)}
         </select>
       </div>
 
-      <div className="bg-zinc-900 p-6 md:p-8 rounded-3xl border border-zinc-800">
+      <div className="bg-white p-6 md:p-8 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="flex justify-between items-center mb-6">
-          <button className="p-2 text-zinc-400 hover:text-white" onClick={() => setM(new Date(y, mo - 1, 1))}><ChevronLeft size={20} /></button>
-          <b className="font-serif-luxury text-2xl font-bold text-white">{m.toLocaleString('en-IN', { month: 'long', year: 'numeric' })}</b>
-          <button className="p-2 text-zinc-400 hover:text-white" onClick={() => setM(new Date(y, mo + 1, 1))}><ChevronRight size={20} /></button>
+          <button className="p-2 text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100 rounded-xl transition-colors" onClick={() => setM(new Date(y, mo - 1, 1))}><ChevronLeft size={20} /></button>
+          <b className="font-serif-luxury text-2xl font-bold text-zinc-900">{m.toLocaleString('en-IN', { month: 'long', year: 'numeric' })}</b>
+          <button className="p-2 text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100 rounded-xl transition-colors" onClick={() => setM(new Date(y, mo + 1, 1))}><ChevronRight size={20} /></button>
         </div>
 
         <div className="grid grid-cols-7 gap-2">
-          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <i key={i} className="text-center text-xs font-bold text-zinc-500 py-1">{d}</i>)}
+          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <i key={i} className="text-center text-xs font-bold text-zinc-400 py-1 not-italic">{d}</i>)}
           {Array.from({ length: m.getDay() }).map((_, i) => <span key={'e' + i} />)}
           {Array.from({ length: n }, (_, i) => {
             const k = db.iso(new Date(y, mo, i + 1));
@@ -2718,10 +2735,10 @@ function AdminCalendar() {
                 key={k} 
                 onClick={() => setDay(k)}
                 className={`min-h-[64px] p-2 rounded-2xl border text-left flex flex-col justify-between transition-all ${
-                  day === k ? 'bg-zinc-800 border-emerald-500 shadow-lg' : 'bg-zinc-950 border-zinc-850 hover:border-zinc-700'
+                  day === k ? 'bg-emerald-50/80 border-[#123D32] shadow-sm' : 'bg-[#FAF8F5]/80 border-zinc-200/60 hover:border-zinc-400 hover:bg-white'
                 }`}
               >
-                <span className="text-xs font-bold text-zinc-300">{i + 1}</span>
+                <span className={`text-xs font-bold ${day === k ? 'text-[#123D32]' : 'text-zinc-700'}`}>{i + 1}</span>
                 <div className="flex flex-wrap gap-1">
                   {dayItems.map((x, j) => (
                     <span 
@@ -2730,7 +2747,7 @@ function AdminCalendar() {
                         x.t === 'Confirmed' ? 'bg-emerald-500' :
                         x.t === 'Pending Payment' ? 'bg-amber-400' :
                         x.t === 'Hold' ? 'bg-orange-500' :
-                        x.t === 'Cancelled' ? 'bg-rose-500' : 'bg-zinc-600'
+                        x.t === 'Cancelled' ? 'bg-rose-500' : 'bg-zinc-400'
                       }`} 
                     />
                   ))}
@@ -2742,23 +2759,25 @@ function AdminCalendar() {
       </div>
 
       {/* Selected Day View */}
-      <div className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800">
-        <h3 className="font-bold text-base text-white mb-4">Agenda for {day}</h3>
+      <div className="bg-white p-6 md:p-8 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+        <h3 className="font-bold text-base text-zinc-900 mb-4 flex items-center justify-between border-b border-zinc-100 pb-3">
+          <span>Agenda for {day}</span>
+        </h3>
         {!items(day).length ? (
-          <p className="text-xs text-zinc-500">No events or blocks scheduled for this date.</p>
+          <p className="text-xs text-zinc-500 font-medium">No events or blocks scheduled for this date.</p>
         ) : (
           <div className="space-y-3">
             {items(day).map((x, i) => (
-              <div key={i} className="p-4 bg-zinc-950 rounded-2xl border border-zinc-800 flex justify-between items-center text-xs">
+              <div key={i} className="p-4 bg-[#FAF8F5] rounded-2xl border border-zinc-200/60 flex justify-between items-center text-xs">
                 {x.b ? (
                   <div>
-                    <b className="text-white text-sm block">{hallOf(s, x.b.hallId).name}</b>
-                    <span className="text-zinc-400">{slotOf(s, x.b.slotId).name} · ITS {x.b.itsNumber} · Ref: {x.b.bookingReference}</span>
+                    <b className="text-zinc-900 text-sm block font-serif-luxury">{hallOf(s, x.b.hallId).name}</b>
+                    <span className="text-zinc-500 font-medium">{slotOf(s, x.b.slotId).name} · ITS {x.b.itsNumber} · Ref: <span className="font-mono text-[#123D32] font-semibold">{x.b.bookingReference}</span></span>
                   </div>
                 ) : (
                   <div>
-                    <b className="text-white text-sm block">{hallOf(s, x.x.hallId).name}</b>
-                    <span className="text-zinc-400">{x.x.slotId || 'Whole day'} · Block Reason: {x.x.reason}</span>
+                    <b className="text-zinc-900 text-sm block font-serif-luxury">{hallOf(s, x.x.hallId).name}</b>
+                    <span className="text-zinc-500 font-medium">{x.x.slotId || 'Whole day'} · Block Reason: {x.x.reason}</span>
                   </div>
                 )}
                 <Pill v={x.t} />
@@ -2779,12 +2798,12 @@ function Payments() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="font-serif-luxury text-4xl font-bold text-white mb-1">Payments Ledger</h1>
-          <p className="text-xs text-zinc-400">Total {rows.length} verified transactions</p>
+          <h1 className="font-serif-luxury text-4xl font-bold text-zinc-900 mb-1">Payments Ledger</h1>
+          <p className="text-xs text-zinc-500 font-medium">Total {rows.length} verified transactions across online and cash deposits</p>
         </div>
-        <button onClick={() => db.download('payments.csv', db.toCSV(rows))} className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+        <button onClick={() => db.download('payments.csv', db.toCSV(rows))} className="px-5 py-2.5 bg-[#123D32] hover:bg-[#1C5B49] text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition-colors">
           <Download size={14} /> Export CSV
         </button>
       </div>
@@ -2793,13 +2812,13 @@ function Payments() {
         placeholder="Search payments by member, ITS, transaction ref..." 
         value={q} 
         onChange={e => setQ(e.target.value)}
-        className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-2xl text-xs text-white"
+        className="w-full px-4 py-3 bg-white border border-zinc-200 rounded-2xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-[#123D32] shadow-sm"
       />
 
-      <div className="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden">
+      <div className="bg-white rounded-3xl border border-zinc-200/80 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-800/80 text-zinc-400 uppercase font-bold text-[10px] tracking-wider">
+            <thead className="bg-zinc-50/80 text-zinc-500 uppercase font-bold text-[10px] tracking-wider border-b border-zinc-200/80">
               <tr>
                 <th className="p-4">Ref</th>
                 <th className="p-4">Booking</th>
@@ -2811,17 +2830,17 @@ function Payments() {
                 <th className="p-4">Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800 text-zinc-200 font-medium">
+            <tbody className="divide-y divide-zinc-100 text-zinc-800 font-medium">
               {rows.map(p => (
-                <tr key={p.id} className="hover:bg-zinc-800/40">
-                  <td className="p-4 font-mono font-bold text-emerald-400">{p.reference}</td>
-                  <td className="p-4 font-mono text-zinc-400">{p.bookingReference}</td>
-                  <td className="p-4 font-semibold">{p.memberName}</td>
-                  <td className="p-4 font-mono text-zinc-400">{p.itsNumber}</td>
-                  <td className="p-4 font-black text-white">{fmt(p.amount)}</td>
-                  <td className="p-4">{p.method}</td>
+                <tr key={p.id} className="hover:bg-zinc-50/70 transition-colors">
+                  <td className="p-4 font-mono font-bold text-[#123D32]">{p.reference}</td>
+                  <td className="p-4 font-mono text-zinc-500">{p.bookingReference}</td>
+                  <td className="p-4 font-semibold text-zinc-900">{p.memberName}</td>
+                  <td className="p-4 font-mono text-zinc-500">{p.itsNumber}</td>
+                  <td className="p-4 font-black text-zinc-900">{fmt(p.amount)}</td>
+                  <td className="p-4 text-zinc-700 capitalize">{p.method}</td>
                   <td className="p-4"><Pill v={p.status} /></td>
-                  <td className="p-4 text-zinc-400">{new Date(p.createdAt).toLocaleDateString()}</td>
+                  <td className="p-4 text-zinc-500">{new Date(p.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -2851,14 +2870,14 @@ function Members() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="font-serif-luxury text-4xl font-bold text-white mb-1">Community Members</h1>
-          <p className="text-xs text-zinc-400">Manage authenticated ITS profiles</p>
+          <h1 className="font-serif-luxury text-4xl font-bold text-zinc-900 mb-1">Community Members</h1>
+          <p className="text-xs text-zinc-500 font-medium">Manage authenticated ITS profiles and credentials</p>
         </div>
         <button 
           onClick={() => setEd({ id: 'm' + Date.now(), itsNumber: '', name: '', contactNumber: '', accountStatus: 'Active' })}
-          className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+          className="px-5 py-2.5 bg-[#123D32] hover:bg-[#1C5B49] text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-colors"
         >
           <Plus size={14} /> Add Member
         </button>
@@ -2868,47 +2887,47 @@ function Members() {
         placeholder="Search member by name or ITS number..." 
         value={q} 
         onChange={e => setQ(e.target.value)}
-        className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-2xl text-xs text-white"
+        className="w-full px-4 py-3 bg-white border border-zinc-200 rounded-2xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-[#123D32] shadow-sm"
       />
 
       {ed && (
-        <div className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 space-y-4">
-          <h3 className="font-bold text-white text-sm">Edit Member</h3>
+        <div className="bg-white p-6 md:p-8 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)] space-y-4">
+          <h3 className="font-serif-luxury text-2xl font-bold text-zinc-900">Edit Member Profile</h3>
           <Err e={e} />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {['itsNumber', 'name', 'contactNumber'].map(k => (
-              <label key={k} className="text-xs text-zinc-400 font-bold uppercase">
+              <label key={k} className="text-xs text-zinc-600 font-bold uppercase">
                 {k === 'itsNumber' ? 'ITS Number' : k === 'contactNumber' ? 'Mobile' : 'Full Name'}
                 <input 
                   value={ed[k]} 
                   onChange={x => setEd({ ...ed, [k]: x.target.value })} 
-                  className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white"
+                  className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]"
                 />
               </label>
             ))}
           </div>
-          <div className="flex gap-2">
-            <button onClick={save} className="px-5 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold">Save Member</button>
-            <button onClick={() => setEd(null)} className="px-5 py-2 bg-zinc-800 text-zinc-400 rounded-xl text-xs">Cancel</button>
+          <div className="flex gap-2 pt-2">
+            <button onClick={save} className="px-5 py-2 bg-[#123D32] hover:bg-[#1C5B49] text-white rounded-xl text-xs font-bold shadow-sm transition-colors">Save Member</button>
+            <button onClick={() => setEd(null)} className="px-5 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl text-xs font-semibold transition-colors">Cancel</button>
           </div>
         </div>
       )}
 
       <div className="space-y-3">
         {s.members.filter(m => (m.name + m.itsNumber).toLowerCase().includes(q.toLowerCase())).map(m => (
-          <div key={m.id} className="p-5 bg-zinc-900 rounded-2xl border border-zinc-800 flex justify-between items-center">
+          <div key={m.id} className="p-5 bg-white rounded-2xl border border-zinc-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:border-zinc-300 flex justify-between items-center transition-all">
             <div>
-              <b className="text-white text-sm block">{m.name}</b>
-              <span className="text-xs text-zinc-400">ITS {m.itsNumber} · {m.contactNumber} · {s.bookings.filter(b => b.memberId === m.id).length} Bookings</span>
+              <b className="text-zinc-900 text-sm block font-serif-luxury">{m.name}</b>
+              <span className="text-xs text-zinc-500 font-medium">ITS <span className="font-mono text-zinc-700 font-semibold">{m.itsNumber}</span> · {m.contactNumber} · {s.bookings.filter(b => b.memberId === m.id).length} Bookings</span>
             </div>
             <div className="flex items-center gap-2">
               <Pill v={m.accountStatus} />
-              <button onClick={() => setEd(m)} className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold rounded-lg text-zinc-200">
+              <button onClick={() => setEd(m)} className="px-3.5 py-1.5 bg-zinc-100 hover:bg-[#123D32] hover:text-white text-xs font-semibold rounded-lg text-zinc-700 transition-colors">
                 Edit
               </button>
               <button 
                 onClick={() => db.saveMember({ ...m, accountStatus: m.accountStatus === 'Active' ? 'Inactive' : 'Active' })}
-                className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold rounded-lg text-zinc-200"
+                className="px-3.5 py-1.5 bg-zinc-100 hover:bg-zinc-200 text-xs font-semibold rounded-lg text-zinc-700 transition-colors"
               >
                 {m.accountStatus === 'Active' ? 'Deactivate' : 'Activate'}
               </button>
@@ -2930,58 +2949,58 @@ function Halls() {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="font-serif-luxury text-4xl font-bold text-white mb-1">Venues & Blocks</h1>
-          <p className="text-xs text-zinc-400">Manage hall capacities, slot tariffs, and maintenance lockouts</p>
+          <h1 className="font-serif-luxury text-4xl font-bold text-zinc-900 mb-1">Venues & Blocks</h1>
+          <p className="text-xs text-zinc-500 font-medium">Manage hall capacities, slot tariffs, and maintenance lockouts</p>
         </div>
-        <button onClick={() => setEd(db.newHall())} className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+        <button onClick={() => setEd(db.newHall())} className="px-5 py-2.5 bg-[#123D32] hover:bg-[#1C5B49] text-white rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-colors">
           <Plus size={14} /> Add New Hall
         </button>
       </div>
 
       {ed && (
-        <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 space-y-4">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white">Edit Venue</h3>
+        <div className="bg-white p-8 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)] space-y-4">
+          <h3 className="font-serif-luxury text-2xl font-bold text-zinc-900">Edit Venue Configuration</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label className="text-xs text-zinc-400 font-bold uppercase">
+            <label className="text-xs text-zinc-600 font-bold uppercase">
               Hall Name
-              <input value={ed.name} onChange={x => setEd({ ...ed, name: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+              <input value={ed.name} onChange={x => setEd({ ...ed, name: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
             </label>
-            <label className="text-xs text-zinc-400 font-bold uppercase">
+            <label className="text-xs text-zinc-600 font-bold uppercase">
               Capacity
-              <input value={ed.capacity} onChange={x => setEd({ ...ed, capacity: +x.target.value || 0 })} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+              <input value={ed.capacity} onChange={x => setEd({ ...ed, capacity: +x.target.value || 0 })} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
             </label>
           </div>
-          <label className="text-xs text-zinc-400 font-bold uppercase block">
-            Image URL
-            <input value={ed.image} onChange={x => setEd({ ...ed, image: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+          <label className="text-xs text-zinc-600 font-bold uppercase block">
+            Image URL / Local Asset Path
+            <input value={ed.image} onChange={x => setEd({ ...ed, image: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 font-mono focus:bg-white focus:border-[#123D32]" />
           </label>
-          <label className="text-xs text-zinc-400 font-bold uppercase block">
+          <label className="text-xs text-zinc-600 font-bold uppercase block">
             Description
-            <textarea value={ed.description} onChange={x => setEd({ ...ed, description: x.target.value })} rows={2} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+            <textarea value={ed.description} onChange={x => setEd({ ...ed, description: x.target.value })} rows={2} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
           </label>
-          <label className="text-xs text-zinc-400 font-bold uppercase block">
+          <label className="text-xs text-zinc-600 font-bold uppercase block">
             Amenities (Comma Separated)
-            <input value={ed.amenities.join(', ')} onChange={x => setEd({ ...ed, amenities: x.target.value.split(',').map(a => a.trim()).filter(Boolean) })} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+            <input value={ed.amenities.join(', ')} onChange={x => setEd({ ...ed, amenities: x.target.value.split(',').map(a => a.trim()).filter(Boolean) })} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
           </label>
 
           <div className="grid grid-cols-3 gap-3">
             {s.settings.slots.map(sl => (
-              <label key={sl.id} className="text-xs text-zinc-400 font-bold uppercase">
+              <label key={sl.id} className="text-xs text-zinc-600 font-bold uppercase">
                 {sl.name} Tariff (₹)
-                <input value={ed.prices[sl.id] || 0} onChange={x => P(sl.id, x.target.value)} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+                <input value={ed.prices[sl.id] || 0} onChange={x => P(sl.id, x.target.value)} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 font-mono focus:bg-white focus:border-[#123D32]" />
               </label>
             ))}
           </div>
 
-          <label className="flex items-center gap-2 text-xs font-bold text-zinc-300">
-            <input type="checkbox" checked={ed.enabled} onChange={x => setEd({ ...ed, enabled: x.target.checked })} /> Enabled for new bookings
+          <label className="flex items-center gap-2 text-xs font-bold text-zinc-700 cursor-pointer pt-1">
+            <input type="checkbox" checked={ed.enabled} onChange={x => setEd({ ...ed, enabled: x.target.checked })} className="accent-[#123D32] rounded" /> Enabled for new reservations
           </label>
 
           <div className="flex gap-2 pt-2">
-            <button onClick={() => { db.saveHall(ed); setEd(null); }} className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold">Save Venue</button>
-            <button onClick={() => setEd(null)} className="px-5 py-2.5 bg-zinc-800 text-zinc-400 rounded-xl text-xs font-bold">Cancel</button>
+            <button onClick={() => { db.saveHall(ed); setEd(null); }} className="px-5 py-2.5 bg-[#123D32] hover:bg-[#1C5B49] text-white rounded-xl text-xs font-bold shadow-sm transition-colors">Save Venue</button>
+            <button onClick={() => setEd(null)} className="px-5 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl text-xs font-semibold transition-colors">Cancel</button>
           </div>
         </div>
       )}
@@ -2989,15 +3008,18 @@ function Halls() {
       {/* Hall Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {s.halls.map(h => (
-          <div key={h.id} className="p-6 bg-zinc-900 rounded-3xl border border-zinc-800 flex justify-between items-start">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <b className="text-white text-base">{h.name}</b>
-                {!h.enabled && <Pill v="Disabled" />}
+          <div key={h.id} className="p-6 bg-white rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex justify-between items-start hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all">
+            <div className="flex items-start gap-4">
+              <img src={h.image} alt={h.name} className="w-16 h-16 rounded-2xl object-cover border border-zinc-100 shadow-sm" />
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <b className="text-zinc-900 text-base font-serif-luxury">{h.name}</b>
+                  {!h.enabled && <Pill v="Disabled" />}
+                </div>
+                <p className="text-xs text-zinc-500 font-medium">{h.capacity} Guests · {fmt(h.prices.morning)} / {fmt(h.prices.afternoon)} / {fmt(h.prices.evening)}</p>
               </div>
-              <p className="text-xs text-zinc-400">{h.capacity} Guests · {fmt(h.prices.morning)} / {fmt(h.prices.afternoon)} / {fmt(h.prices.evening)}</p>
             </div>
-            <button onClick={() => setEd(JSON.parse(JSON.stringify(h)))} className="px-3.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold rounded-lg text-zinc-200">
+            <button onClick={() => setEd(JSON.parse(JSON.stringify(h)))} className="px-3.5 py-1.5 bg-zinc-100 hover:bg-[#123D32] hover:text-white text-xs font-semibold rounded-lg text-zinc-700 transition-colors">
               Edit
             </button>
           </div>
@@ -3005,40 +3027,40 @@ function Halls() {
       </div>
 
       {/* Maintenance Lockouts */}
-      <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 space-y-4">
-        <h3 className="font-serif-luxury text-2xl font-bold text-white">Block Dates for Maintenance / Jamaat Majlis</h3>
+      <div className="bg-white p-8 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)] space-y-4">
+        <h3 className="font-serif-luxury text-2xl font-bold text-zinc-900">Block Dates for Maintenance / Jamaat Majlis</h3>
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-          <label className="text-xs text-zinc-400 font-bold uppercase">
+          <label className="text-xs text-zinc-600 font-bold uppercase">
             Hall
-            <select value={bl.hallId} onChange={x => setBl({ ...bl, hallId: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white">
+            <select value={bl.hallId} onChange={x => setBl({ ...bl, hallId: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-800 focus:bg-white focus:border-[#123D32]">
               {s.halls.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
             </select>
           </label>
-          <label className="text-xs text-zinc-400 font-bold uppercase">
+          <label className="text-xs text-zinc-600 font-bold uppercase">
             Date
-            <input type="date" value={bl.date} onChange={x => setBl({ ...bl, date: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+            <input type="date" value={bl.date} onChange={x => setBl({ ...bl, date: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-800 focus:bg-white focus:border-[#123D32]" />
           </label>
-          <label className="text-xs text-zinc-400 font-bold uppercase">
+          <label className="text-xs text-zinc-600 font-bold uppercase">
             Slot
-            <select value={bl.slotId} onChange={x => setBl({ ...bl, slotId: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white">
+            <select value={bl.slotId} onChange={x => setBl({ ...bl, slotId: x.target.value })} className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-800 focus:bg-white focus:border-[#123D32]">
               <option value="">Whole Day</option>
               {s.settings.slots.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}
             </select>
           </label>
-          <label className="text-xs text-zinc-400 font-bold uppercase">
+          <label className="text-xs text-zinc-600 font-bold uppercase">
             Reason
-            <input value={bl.reason} onChange={x => setBl({ ...bl, reason: x.target.value })} placeholder="e.g. Annual Maintenance" className="mt-1 w-full p-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+            <input value={bl.reason} onChange={x => setBl({ ...bl, reason: x.target.value })} placeholder="e.g. Annual Maintenance" className="mt-1 w-full p-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-800 focus:bg-white focus:border-[#123D32]" />
           </label>
         </div>
-        <button onClick={() => bl.date && db.addBlock({ ...bl, slotId: bl.slotId || null })} className="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold">
+        <button onClick={() => bl.date && db.addBlock({ ...bl, slotId: bl.slotId || null })} className="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold shadow-sm transition-colors">
           Add Lockout Block
         </button>
 
         <div className="space-y-2 pt-4">
           {s.blocks.map(b => (
-            <div key={b.id} className="p-3.5 bg-zinc-950 rounded-xl border border-zinc-800 flex justify-between items-center text-xs text-zinc-300">
-              <span>{hallOf(s, b.hallId).name} · {b.date} · {b.slotId || 'Whole day'} · {b.reason}</span>
-              <button onClick={() => db.removeBlock(b.id)} className="text-rose-400 hover:text-rose-300 font-semibold">Unblock</button>
+            <div key={b.id} className="p-3.5 bg-zinc-50 rounded-xl border border-zinc-200 flex justify-between items-center text-xs text-zinc-700">
+              <span className="font-medium">{hallOf(s, b.hallId).name} · {b.date} · {b.slotId || 'Whole day'} · <span className="text-zinc-500 italic">{b.reason}</span></span>
+              <button onClick={() => db.removeBlock(b.id)} className="text-rose-600 hover:text-rose-700 font-semibold px-2 py-1 rounded hover:bg-rose-50 transition-colors">Unblock</button>
             </div>
           ))}
         </div>
@@ -3058,57 +3080,59 @@ function Settings() {
   return (
     <div className="space-y-8 max-w-3xl">
       <div>
-        <h1 className="font-serif-luxury text-4xl font-bold text-white mb-1">System Settings</h1>
-        <p className="text-xs text-zinc-400">Configure advance percentages, hold duration, and policies</p>
+        <h1 className="font-serif-luxury text-4xl font-bold text-zinc-900 mb-1">System Settings</h1>
+        <p className="text-xs text-zinc-500 font-medium">Configure advance percentages, hold duration, and reservation policies</p>
       </div>
 
-      <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 space-y-5">
+      <div className="bg-white p-8 rounded-3xl border border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)] space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <label className="text-xs text-zinc-400 font-bold uppercase">
+          <label className="text-xs text-zinc-600 font-bold uppercase">
             Advance Deposit Required (%)
-            <input value={t.advancePct} onChange={x => setT({ ...t, advancePct: +x.target.value || 0 })} className="mt-1 w-full p-3 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white font-mono" />
+            <input value={t.advancePct} onChange={x => setT({ ...t, advancePct: +x.target.value || 0 })} className="mt-1 w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 font-mono focus:bg-white focus:border-[#123D32]" />
           </label>
-          <label className="text-xs text-zinc-400 font-bold uppercase">
+          <label className="text-xs text-zinc-600 font-bold uppercase">
             Active Checkout Hold (Minutes)
-            <input value={t.holdMinutes} onChange={x => setT({ ...t, holdMinutes: +x.target.value || 1 })} className="mt-1 w-full p-3 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white font-mono" />
+            <input value={t.holdMinutes} onChange={x => setT({ ...t, holdMinutes: +x.target.value || 1 })} className="mt-1 w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 font-mono focus:bg-white focus:border-[#123D32]" />
           </label>
         </div>
 
         <div className="space-y-3 pt-2">
-          <span className="text-xs font-bold uppercase text-zinc-400">Slot Timings</span>
+          <span className="text-xs font-bold uppercase text-zinc-600">Slot Timings</span>
           {t.slots.map((x, i) => (
             <div key={x.id} className="grid grid-cols-3 gap-3 items-center">
-              <span className="text-xs font-semibold text-zinc-300">{x.name}</span>
-              <input type="time" value={x.start} onChange={e => sl(i, 'start', e.target.value)} className="p-2 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
-              <input type="time" value={x.end} onChange={e => sl(i, 'end', e.target.value)} className="p-2 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+              <span className="text-xs font-semibold text-zinc-800">{x.name}</span>
+              <input type="time" value={x.start} onChange={e => sl(i, 'start', e.target.value)} className="p-2 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
+              <input type="time" value={x.end} onChange={e => sl(i, 'end', e.target.value)} className="p-2 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
             </div>
           ))}
         </div>
 
-        <label className="text-xs text-zinc-400 font-bold uppercase block">
+        <label className="text-xs text-zinc-600 font-bold uppercase block">
           Cancellation & Refund Policy
-          <textarea value={t.policy} onChange={x => setT({ ...t, policy: x.target.value })} rows={2} className="mt-1 w-full p-3 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+          <textarea value={t.policy} onChange={x => setT({ ...t, policy: x.target.value })} rows={2} className="mt-1 w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
         </label>
-        <label className="text-xs text-zinc-400 font-bold uppercase block">
+        <label className="text-xs text-zinc-600 font-bold uppercase block">
           Booking Instructions
-          <textarea value={t.instructions} onChange={x => setT({ ...t, instructions: x.target.value })} rows={2} className="mt-1 w-full p-3 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+          <textarea value={t.instructions} onChange={x => setT({ ...t, instructions: x.target.value })} rows={2} className="mt-1 w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
         </label>
-        <label className="text-xs text-zinc-400 font-bold uppercase block">
+        <label className="text-xs text-zinc-600 font-bold uppercase block">
           Office Contact Details
-          <input value={t.contact} onChange={x => setT({ ...t, contact: x.target.value })} className="mt-1 w-full p-3 bg-zinc-800 border border-zinc-700 rounded-xl text-xs text-white" />
+          <input value={t.contact} onChange={x => setT({ ...t, contact: x.target.value })} className="mt-1 w-full p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 focus:bg-white focus:border-[#123D32]" />
         </label>
 
-        <button onClick={() => { db.saveSettings(t); setOk(true); }} className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-bold uppercase tracking-wider">
-          Save Settings
-        </button>
-        {ok && <span className="text-xs text-emerald-400 font-bold ml-3">✓ Settings successfully saved</span>}
+        <div className="flex items-center gap-3 pt-2">
+          <button onClick={() => { db.saveSettings(t); setOk(true); }} className="px-6 py-3 bg-[#123D32] hover:bg-[#1C5B49] text-white rounded-full text-xs font-bold uppercase tracking-wider shadow-sm transition-colors">
+            Save Settings
+          </button>
+          {ok && <span className="text-xs text-emerald-700 font-bold">✓ Settings successfully saved</span>}
+        </div>
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-rose-950/40 p-8 rounded-3xl border border-rose-900/60 space-y-3">
-        <h3 className="font-bold text-rose-300 text-sm">Danger Zone</h3>
-        <p className="text-xs text-rose-400">Reset all demo transactions, blocks, and reservations back to original seed data.</p>
-        <button onClick={() => window.confirm('Reset ALL demo data?') && db.resetDemo()} className="px-5 py-2.5 bg-rose-700 hover:bg-rose-600 text-white rounded-xl text-xs font-bold">
+      <div className="bg-rose-50/70 p-8 rounded-3xl border border-rose-200/80 space-y-3">
+        <h3 className="font-bold text-rose-900 text-sm">Danger Zone</h3>
+        <p className="text-xs text-rose-700 font-medium">Reset all demo transactions, blocks, and reservations back to original seed data.</p>
+        <button onClick={() => window.confirm('Reset ALL demo data?') && db.resetDemo()} className="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-sm transition-colors">
           Reset Demo Database
         </button>
       </div>
