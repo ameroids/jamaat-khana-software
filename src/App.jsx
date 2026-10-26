@@ -816,7 +816,7 @@ function Home() {
               </span>
               <h2 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] uppercase mb-4 drop-shadow-md">
                 {activeHall.name.split(' ')[0]}<br/>
-                <span className="font-serif-luxury font-normal italic tracking-normal text-amber-300">Royale.</span>
+                <span className="font-serif-luxury font-normal italic tracking-normal text-amber-300">Hall.</span>
               </h2>
               <p className={`text-base font-medium max-w-md leading-relaxed ${activeTheme.subTextColor}`}>
                 {activeHall.description}
